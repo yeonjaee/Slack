@@ -1,6 +1,6 @@
 import express from 'express';
 import { WebClient } from '@slack/web-api';
-import { createEventAdapter } from '@slack/events-api';
+import {createEventAdapter, ErrorCode} from '@slack/events-api';
 import { createServer } from 'http';
 
 // 생성한 슬랙봇에 대한 키값들
@@ -15,13 +15,22 @@ const webClient = new WebClient(CONFIG.BOT_USER_OAUTH_ACCESS_TOKEN)
 // 메시지 이벤트 구독하기
 slackEvents.on('message', async (event) => {
     console.log(event);
-
-    if(event.text == '테스트'){
-        webClient.chat.postMessage({
-            text: '안녕 Steve. 이건 테스트입니다.',
+try{
+    if (event.text === '스탠드업') {
+        await webClient.chat.postMessage({
+            user:'',
+            text: `안녕하세요 <@유저아이디>!\n할 일을 보여줍니다.. 이건 테스트입니다.`,
             channel: event.channel,
+
         });
     }
+}catch (e) {
+    if(e.code === ErrorCode.SignatureVerificationFailure){
+        console.log(e.data);
+    }else{
+        console.error(e)
+    }
+}
 });
 
 // 메지지 이벤트 엔드포인트를 express 에 등록하기
