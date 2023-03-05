@@ -7,7 +7,7 @@ import { createServer } from 'http';
 // 슬랙에서 슬랙봇에게 접근가능한 엔드포인트를 만들기 위해 웹서버(express)를 사용
 const app = express();
 
-// env 변수
+// .env 변수
 const signingSecret = process.env.SIGNING_SECRET;
 const botToken = process.env.BOT_USER_OAUTH_ACCESS_TOKEN;
 
