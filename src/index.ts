@@ -9,7 +9,7 @@ const app = express();
 
 // env 변수
 const signingSecret = process.env.SIGNING_SECRET;
-const botToken = process.env.BOT_USER_OAUTH_ACCESS_TOKEN ;
+const botToken = process.env.BOT_USER_OAUTH_ACCESS_TOKEN;
 
 const slackEvents = createEventAdapter(signingSecret);
 const webClient = new WebClient(botToken)
@@ -24,6 +24,66 @@ try{
             text: `안녕하세요 <@${event.user}>!\n이건 테스트입니다.`,
             channel: event.channel,
         });
+    }
+    if( event.text === 'block'){
+        await webClient.chat.postMessage({
+            channel: event.channel,
+            blocks: [
+            {
+                "type": "actions",
+                "block_id": "actions1",
+                "elements": [
+                    {
+                        "type": "static_select",
+                        "placeholder": {
+                            "type": "plain_text",
+                            "text": "Select?"
+                        },
+                        "action_id": "select_2",
+                        "options": [
+                            {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "Matilda"
+                                },
+                                "value": "matilda"
+                            },
+                            {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "Glinda"
+                                },
+                                "value": "glinda"
+                            },
+                            {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "Granny Weatherwax"
+                                },
+                                "value": "grannyWeatherwax"
+                            },
+                            {
+                                "text": {
+                                    "type": "plain_text",
+                                    "text": "Hermione"
+                                },
+                                "value": "hermione"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "Cancel"
+                        },
+                        "value": "cancel",
+                        "action_id": "button_1"
+                    }
+                ]
+            }
+        ]
+        })
     }
 }catch (e) {
     if(e.code === ErrorCode.SignatureVerificationFailure){
