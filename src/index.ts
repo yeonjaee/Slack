@@ -8,7 +8,7 @@ import { createServer } from 'http';
 const app = express();
 
 // .env 변수
-const signingSecret = process.env.SIGNING_SECRET;
+const signingSecret = process.env.SLACK_SIGNING_SECRET;
 const botToken = process.env.BOT_USER_OAUTH_ACCESS_TOKEN;
 
 const slackEvents = createEventAdapter(signingSecret);
